@@ -25,7 +25,10 @@ stages:
     - script: |
         npm install
       displayName: 'npm install, build, and test'
-
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml'
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
