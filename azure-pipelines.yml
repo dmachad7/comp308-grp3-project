@@ -10,19 +10,28 @@ pool:
   vmImage: ubuntu-latest
 
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.X'
-  displayName: 'Install Node.js'
-
-- task: UseNode@1
-  inputs:
-    version: 16.18.0
-    
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
-
-
+stages:
+- stage: build
+  displayName: 'Build'
+  jobs:
+  - job: build_test
+    displayName: 'Build and test'
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '10.x'
+      displayName: 'Install Node.js'
+    - script: |
+        npm install
+        npm run build
+        npm run test
+      displayName: 'npm install, build, and test'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+        includeRootFolder: false
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)'
