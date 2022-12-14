@@ -7,7 +7,7 @@
     "start": "nodemon server",
     "dev": "nodemon server",
     "test": "echo \"Error: no test specified\" && exit 1",
-     "build": "run build"
+    "build": "run build"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
