@@ -5,7 +5,9 @@
 
 trigger:
 - main
-
+pr: none
+pool:
+  vmImage: ubuntu-latest
 
 stages:
 - stage: build
@@ -14,7 +16,7 @@ stages:
   - job: build_test
     displayName: 'Build and test'
     pool:
-      vmImage: 'Ubuntu-16.04'
+      vmImage: 'Ubuntu-latest'
     steps:
     - task: NodeTool@0
       inputs:
