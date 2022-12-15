@@ -13,8 +13,8 @@ stages:
 - stage: build
   displayName: 'Build'
   jobs:
-  - job: build_test
-    displayName: 'Build and test'
+  - job: build
+    displayName: 'Build'
     pool:
       vmImage: 'Ubuntu-latest'
     steps:
@@ -25,14 +25,23 @@ stages:
     - script: |
         npm install
       displayName: 'npm install, build, and test'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)'
+
+- stage: Test
+  displayName: 'Test'
+  jobs:
+  - job: Test
+    displayName: 'Test'
+    pool:
+      vmImage: 'Ubuntu-latest'
+    steps:
     - task: PublishTestResults@2
       inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-*.xml'
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/TEST-*.xml'
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
         includeRootFolder: false
-    - task: PublishPipelineArtifact@0
-      inputs:
-        targetPath: '$(System.ArtifactsDirectory)'
